@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargar datos</title>
+</head>
+<body>
+    <!--Especifica la URL a la que se enviarán los datos del formulario cuando se envíe -->
+    <form action="/cargar_datos" method="post">
+        <div>
+            <!--Label se utiliza para asociar el input con el texto descriptivo.. al hacer click en el nombre se enfocaria en el campo de entrada de texto-->
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" required>
+            <!-- Type tipo / name nombre del campo de entrada / id hace refencia al label / value es el valor del campo de entrada-->
+        </div>
+
+        <div>
+            <label for="apellido">Apellido</label>
+            <input type="text" id="apellido" name="apellido" required>
+        </div>
+        <div>
+            <label for="cedula">Cedula</label>
+            <input type="text" id="cedula" name="cedula" required>
+        </div>
+
+        <input type="submit" value="Cargar">
+    </form>
+    
+</body>
+</html>
