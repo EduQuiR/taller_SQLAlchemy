@@ -7,5 +7,13 @@
 </head>
 <body>
     <h1>Hola mundo</h1>
+    <form method="post" >
+
+        <!-- Formulario para cargar materias donde tambies podriamos renderizar las materias al cargarse -->
+        {{ form.hidden_tag() }}
+        {{ form.name() }}
+        {{ form.submit() }}
+        
+    </form>
 </body>
 </html>

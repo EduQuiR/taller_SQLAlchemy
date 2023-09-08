@@ -2,15 +2,34 @@
 from flask import render_template, request, redirect,url_for
 from conexion import app, db
 from models import Alumnos
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
 
 #creamos la ruta principal de nuestra pagina
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+# @app.route('/')
+# def index():
+#     return render_template('index.html')
 
 #CRUD - CREAT / CARGAR - READ / MOSTRAR - UPDATE / ACTUALIZAR - DELETE / ELIMINAR
 
+class Materiaform(FlaskForm):
+    name = StringField('name')
+    submit = SubmitField('submit')
+
+@app.route('/', methods=['GET', 'POST'])
+def cargar_materias():
+    form = Materiaform()
+
+    if form.validate_on_submit():
+        name = request.form['name']
+
+        materia_name = Materia(name)
+
+        db.session.add(materia_name)
+        db.session.commit()
+
+    return render_template('index.html', form=form)
 
 @app.route('/cargar_datos', methods = ['GET','POST'])
 def cargar_datos():
