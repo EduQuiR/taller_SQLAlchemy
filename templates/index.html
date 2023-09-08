@@ -8,12 +8,13 @@
 <body>
     <h1>Hola mundo</h1>
     <form method="post" >
-
         <!-- Formulario para cargar materias donde tambies podriamos renderizar las materias al cargarse -->
-        {{ form.hidden_tag() }}
-        {{ form.name() }}
-        {{ form.submit() }}
-        
+        <div>
+            <label for="materia">Materia</label>
+            <input type="text" id="materia" name="name" required>
+        </div>
+
+        <input type="submit" value="Cargar">
     </form>
 </body>
 </html>

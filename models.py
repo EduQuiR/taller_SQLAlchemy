@@ -16,10 +16,12 @@ class Alumnos(db.Model):
 
 
     #Constructor de clase
-    def __init__(self, nombre, apellido, cedula):
+    def __init__(self, nombre, apellido, cedula, materia_id):
         self.nombre = nombre
         self.apellido = apellido
         self.cedula = cedula
+        self.materia_id = materia_id
+
 
 class Materia(db.Model):
     id = db.Column(db.Integer, primary_key=True)

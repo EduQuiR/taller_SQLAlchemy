@@ -1,9 +1,7 @@
 #Importamos las librerias 
 from flask import render_template, request, redirect,url_for
 from conexion import app, db
-from models import Alumnos
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from models import Alumnos, Materia
 
 #creamos la ruta principal de nuestra pagina
 
@@ -13,15 +11,10 @@ from wtforms import StringField, SubmitField
 
 #CRUD - CREAT / CARGAR - READ / MOSTRAR - UPDATE / ACTUALIZAR - DELETE / ELIMINAR
 
-class Materiaform(FlaskForm):
-    name = StringField('name')
-    submit = SubmitField('submit')
-
 @app.route('/', methods=['GET', 'POST'])
 def cargar_materias():
-    form = Materiaform()
 
-    if form.validate_on_submit():
+    if request.method=='POST':
         name = request.form['name']
 
         materia_name = Materia(name)
@@ -29,7 +22,7 @@ def cargar_materias():
         db.session.add(materia_name)
         db.session.commit()
 
-    return render_template('index.html', form=form)
+    return render_template('index.html')
 
 @app.route('/cargar_datos', methods = ['GET','POST'])
 def cargar_datos():
@@ -38,9 +31,11 @@ def cargar_datos():
         nombre = request.form['nombre']#Eduardo
         apellido = request.form['apellido']#Quinhonez
         cedula = request.form['cedula']
+        materia_id = request.form['materia']
+
 
         #Creamos un objeto de la clase Alumnos con los datos obtenidos
-        datos_alumnos = Alumnos(nombre, apellido, cedula)
+        datos_alumnos = Alumnos(nombre, apellido, cedula, materia_id)
 
         db.session.add(datos_alumnos)#Agregar a la sesion de la base de datos
         db.session.commit()#Confirmamos la carga de los datos
@@ -54,8 +49,8 @@ def cargar_datos():
 def mostrar_datos():
 
     lista_alumnos = Alumnos.query.all()#Creamos el nuevo objeto que contiene la lista total de nuestra base de datos
-
-    return render_template('mostrar_datos.html', lista_alumnos=lista_alumnos)
+    # materia_id_from_alumnos = Alumnos.query.filter_by()
+    return render_template('mostrar_datos.html', lista_alumnos=lista_alumnos, materia=materia)
 
 #Creamos la ruta actualizar donde solicitamos el ID del alumno para mostrar solo ese dato
 @app.route('/actualizar/<int:alumno_id>', methods = ['GET', 'POST'])
@@ -92,3 +87,6 @@ def eliminar():
         db.session.commit()#Confirmamos la eliminacion 
 
         return redirect(url_for('mostrar_datos'))#Redireccionamos a la pagina para mostrar los datos de la base de datos
+
+# Una ruta que filtre por materias 
+# Renderizar las materias por alumnos 
