@@ -10,22 +10,20 @@ class Alumnos(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False )
     apellido = db.Column(db.String(50), nullable=False )
-    cedula = db.Column(db.Integer, nullable=False )
-    # despues de crear la class Materia, relacionamos con un Alumno 
-    materia_id = db.Column(db.Integer, db.ForeignKey('materia.id'))
-
+    cedula = db.Column(db.Integer, nullable=False)
 
     #Constructor de clase
-    def __init__(self, nombre, apellido, cedula, materia_id):
+    def __init__(self, nombre, apellido, cedula):
         self.nombre = nombre
         self.apellido = apellido
-        self.cedula = cedula
-        self.materia_id = materia_id
-
-
-class Materia(db.Model):
+        self.cedula = cedula 
+class Calificaciones(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
+    calificacion = db.Column(db.Integer, nullable=False)
+    alumno_id = db.Column(db.Integer, db.ForeignKey('alumnos.id'))
 
-    def __init__(self, name):
+    def __init__(self, name, calificacion, alumno_id):
         self.name = name
+        self.calificacion = calificacion
+        self.alumno_id = alumno_id
