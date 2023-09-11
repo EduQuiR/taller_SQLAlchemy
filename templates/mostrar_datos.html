@@ -31,6 +31,13 @@
                     <input type="submit" value="Eliminar">
                 </form>
             </td>
+            <td>
+                <!--Con el "action" especificamos la ruta a la que se enviarán los datos seleccinados en el formulario para que se elimine-->
+                <form action="{{url_for('mostrar_calificaciones', alumno_ci=alumno.cedula)}}" method="get">
+                    <input type="hidden" name="alumno_ci" value="{{alumno.cedula}}">
+                    <input type="submit" value="mostrar calificacion">
+                </form>
+            </td>
         </tbody>
         {% endfor %}
 

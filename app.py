@@ -59,15 +59,16 @@ def mostrar_datos():
 
 # Dar click a un alumno y que me muestre sus calificacion
 # click me lleva a otro endpoint
-@app.route('/mostrar_calificaciones/<int:ci>',methods = ['GET','POST'])
-def mostrar_calificaciones(ci):
+@app.route('/mostrar_calificaciones/<int:alumno_ci>',methods = ['GET','POST'])
+def mostrar_calificaciones(alumno_ci):
     # Filtrar a los alumnos por cedula una vez que renderizamos la lista de alumnos 
-    alumno = Alumnos.query.filter_by(cedula=ci).first()
+    alumno = Alumnos.query.filter_by(cedula=alumno_ci).first()
+    print(alumno)
     # Con la cedula me va traer todas sus calificaciones 
     calificaciones = Calificaciones.query.filter_by(alumno_id=alumno.id)
     print(calificaciones)
 
-    return render_template('mostrar_datos.html',)
+    return render_template('mostrar_calificaciones.html', alumno=alumno ,calificaciones=calificaciones )
 
 
 #Creamos la ruta actualizar donde solicitamos el ID del alumno para mostrar solo ese dato
