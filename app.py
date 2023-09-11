@@ -1,7 +1,7 @@
 #Importamos las librerias 
 from flask import render_template, request, redirect,url_for
 from conexion import app, db
-from models import Alumnos
+from models import Alumnos, Calificaciones
 
 #creamos la ruta principal de nuestra pagina
 
@@ -10,6 +10,25 @@ def index():
     return render_template('index.html')
 
 #CRUD - CREAT / CARGAR - READ / MOSTRAR - UPDATE / ACTUALIZAR - DELETE / ELIMINAR
+@app.route('/cargar_calificaciones', methods=['GET','POST'])
+def cargar_calificaciones():
+
+    if request.method == 'POST':
+        materia = request.form['materia']
+        calificacion = request.form['calificacion']
+        cedula = request.form['cedula']
+
+        alumno = Alumnos.query.filter_by(cedula=cedula).first()
+
+        if alumno != None:
+            calificacion = Calificaciones(materia, calificacion, alumno.id)
+
+            db.session.add(calificacion)
+            db.session.commit()
+        else:
+            return 'no existe'
+
+    return render_template('cargar_calificaciones.html')
 
 
 @app.route('/cargar_datos', methods = ['GET','POST'])
@@ -19,7 +38,7 @@ def cargar_datos():
         nombre = request.form['nombre']#Eduardo
         apellido = request.form['apellido']#Quinhonez
         cedula = request.form['cedula']
-
+        
         #Creamos un objeto de la clase Alumnos con los datos obtenidos
         datos_alumnos = Alumnos(nombre, apellido, cedula)
 
@@ -35,8 +54,22 @@ def cargar_datos():
 def mostrar_datos():
 
     lista_alumnos = Alumnos.query.all()#Creamos el nuevo objeto que contiene la lista total de nuestra base de datos
-
     return render_template('mostrar_datos.html', lista_alumnos=lista_alumnos)
+
+
+# Dar click a un alumno y que me muestre sus calificacion
+# click me lleva a otro endpoint
+@app.route('/mostrar_calificaciones/<int:alumno_ci>',methods = ['GET','POST'])
+def mostrar_calificaciones(alumno_ci):
+    # Filtrar a los alumnos por cedula una vez que renderizamos la lista de alumnos 
+    alumno = Alumnos.query.filter_by(cedula=alumno_ci).first()
+    print(alumno)
+    # Con la cedula me va traer todas sus calificaciones 
+    calificaciones = Calificaciones.query.filter_by(alumno_id=alumno.id)
+    print(calificaciones)
+
+    return render_template('mostrar_calificaciones.html', alumno=alumno ,calificaciones=calificaciones )
+
 
 #Creamos la ruta actualizar donde solicitamos el ID del alumno para mostrar solo ese dato
 @app.route('/actualizar/<int:alumno_id>', methods = ['GET', 'POST'])
@@ -73,3 +106,7 @@ def eliminar():
         db.session.commit()#Confirmamos la eliminacion 
 
         return redirect(url_for('mostrar_datos'))#Redireccionamos a la pagina para mostrar los datos de la base de datos
+
+# Renderizar las materias por alumnos 
+# Una ruta que filtre en Alumnos por materias
+# @app.route('/filtrar/<:id_materia>')
